@@ -20,6 +20,10 @@ const Producto = () => {
   const [loading, setLoading] = useState(true);
   const [cantidad, setCantidad] = useState(10);
 
+  const handleCategoriaClick = () => {
+    navigate(`${routes.shop}?categoriaId=${producto!.categoriaId}`);
+  };
+
   const agregarAlCarrito = (productoId: number, cantidad: number) => {
     console.log(
       `Agregando producto ${productoId} con cantidad ${cantidad} al carrito`
@@ -85,7 +89,11 @@ const Producto = () => {
 
                 <div className={styles.descripcion}>{producto.descripcion}</div>
 
-                <div className={styles.categoria}>
+                <div
+                  className={styles.categoria}
+                  onClick={handleCategoriaClick}
+                  style={{ cursor: "pointer" }}
+                >
                   Categoría:{" "}
                   <span className={styles.categoriaNombre}>
                     {producto.categoriaNombre}

@@ -1,22 +1,19 @@
 .shopContainer {
   display: flex;
-  flex-wrap: nowrap;
   flex-direction: row;
   justify-content: center;
-  align-items: stretch;
-  align-content: stretch;
+
+  max-width: 1350px;
+  margin: 0 auto;
+
+  width: 100%;
+  gap: 20px;
 }
 
 .productsSection {
-  padding: 48px 0;
+  max-width: 900px;
   width: 100%;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  align-content: stretch;
-  gap: 20px;
+  margin: 5% auto;
 }
 
 /* 🔹 Tablets (pantallas medianas) */

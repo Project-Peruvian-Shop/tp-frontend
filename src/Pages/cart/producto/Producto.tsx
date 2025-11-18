@@ -141,9 +141,7 @@ const Producto = () => {
               </div>
 
               <div className={styles.usosContainer}>
-                <div className={styles.subtitle}>
-                  Usos
-                </div>
+                <div className={styles.subtitle}>Usos</div>
                 <p>{producto.categoriaUsos}</p>
               </div>
             </div>

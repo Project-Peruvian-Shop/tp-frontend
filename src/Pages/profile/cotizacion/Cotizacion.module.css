@@ -19,9 +19,7 @@
 }
 
 .card {
-  height: 200px;
-  margin-bottom: 20px;
-  padding: 40px;
+  padding: 50px 40px;
   display: flex;
   flex-direction: column;
   gap: 16px;

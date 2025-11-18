@@ -126,14 +126,14 @@ function Cotizacion() {
                       rel="noopener noreferrer"
                       className={styles.pdfButton}
                     >
-                      Ver PDF
+                      Ver
                     </a>
                     <a
                       href={cotizacion.cotizacionEnlace}
                       download={`cotizacion-${cotizacion.numero}.pdf`}
                       className={`${styles.pdfButton} ${styles.rejectButton}`}
                     >
-                      Descargar PDF
+                      Descargar
                     </a>
                   </div>
                 </div>

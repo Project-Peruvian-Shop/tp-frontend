@@ -117,7 +117,7 @@ function Cotizacion() {
             {cotizacion?.cotizacionEnlace ? (
               <>
                 <div className={styles.pdfRow}>
-                  <div className={styles.titlePDF}>PDF de la cotización:</div>
+                  <div className={styles.titlePDF}>PDF de la cotización</div>
 
                   <div className={styles.pdfButtons}>
                     <a
@@ -139,7 +139,7 @@ function Cotizacion() {
                 </div>
 
                 <div className={styles.pdfRow}>
-                  <div className={styles.titlePDF}>Decisión:</div>
+                  <div className={styles.titlePDF}>Responder</div>
 
                   <div className={styles.pdfButtons}>
                     <a

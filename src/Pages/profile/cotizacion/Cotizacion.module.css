@@ -110,7 +110,7 @@
 .titlePDF {
   margin-top: 16px;
   margin-bottom: 12px;
-  color: var(--primary-color);
+  color: var(--secondary-color);
   font-family: "Montserrat", sans-serif;
   font-weight: 700;
   font-style: Bold;

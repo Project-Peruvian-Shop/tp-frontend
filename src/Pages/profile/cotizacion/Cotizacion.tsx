@@ -116,26 +116,48 @@ function Cotizacion() {
           <div className={styles.card}>
             {cotizacion?.cotizacionEnlace ? (
               <>
-                <div className={styles.titlePDF}>PDF de la cotización</div>
-                <div className={styles.pdfContainer}>
-                  {/* Ver PDF en nueva pestaña */}
-                  <a
-                    href={cotizacion.cotizacionEnlace}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={styles.pdfButton}
-                  >
-                    Ver PDF
-                  </a>
+                <div className={styles.pdfRow}>
+                  <div className={styles.titlePDF}>PDF de la cotización:</div>
 
-                  {/* Descargar PDF directamente */}
-                  <a
-                    href={cotizacion.cotizacionEnlace}
-                    download={`cotizacion-${cotizacion.numero}.pdf`}
-                    className={styles.pdfButton}
-                  >
-                    Descargar PDF
-                  </a>
+                  <div className={styles.pdfButtons}>
+                    <a
+                      href={cotizacion.cotizacionEnlace}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={styles.pdfButton}
+                    >
+                      Ver PDF
+                    </a>
+                    <a
+                      href={cotizacion.cotizacionEnlace}
+                      download={`cotizacion-${cotizacion.numero}.pdf`}
+                      className={`${styles.pdfButton} ${styles.rejectButton}`}
+                    >
+                      Descargar PDF
+                    </a>
+                  </div>
+                </div>
+
+                <div className={styles.pdfRow}>
+                  <div className={styles.titlePDF}>Decisión:</div>
+
+                  <div className={styles.pdfButtons}>
+                    <a
+                      href={cotizacion.cotizacionEnlace}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={styles.pdfButton}
+                    >
+                      Aceptar
+                    </a>
+                    <a
+                      href={cotizacion.cotizacionEnlace}
+                      download={`cotizacion-${cotizacion.numero}.pdf`}
+                      className={`${styles.pdfButton} ${styles.rejectButton}`}
+                    >
+                      Rechazar
+                    </a>
+                  </div>
                 </div>
               </>
             ) : (

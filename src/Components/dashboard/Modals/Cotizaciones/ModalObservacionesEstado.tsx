@@ -98,7 +98,7 @@ function ModalObservacionEstado({
   return (
     <div className={style.modalOverlay}>
       <div className={style.modalContent}>
-        <h2>Editar Cotización</h2>
+        <h2>Actualizar estado</h2>
         <p>Numero: {cotizacion.numeroCotizacion}</p>
         <p>Cliente: {cotizacion.clienteNombre}</p>
 

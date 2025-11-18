@@ -239,7 +239,7 @@ function CotizacionDetalle() {
           usuario?.rol === UserRoleConst.SUPERADMIN) && (
           <div className={styles.actions}>
             <ButtonHeader
-              title="Editar"
+              title="Actualizar estado"
               onClick={() => {
                 if (cotizacion) {
                   setSelectedCotizacion({

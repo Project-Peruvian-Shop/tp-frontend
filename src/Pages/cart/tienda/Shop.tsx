@@ -10,6 +10,7 @@ import Pagination from "../../../Components/pagination/Pagination";
 import type { AllAndQuantityResponseDTO } from "../../../models/Categoria/Categoria_response";
 import { getCategoriaAllQuantity } from "../../../services/categoria.service";
 import { useSearchParams } from "react-router-dom";
+import { Loader } from "../../../Components/loader/loader";
 
 const Shop = () => {
   const [pageData, setPageData] =
@@ -71,7 +72,7 @@ const Shop = () => {
 
         <div className={styles.productsSection}>
           {loading ? (
-            <p>Cargando productos...</p>
+            <Loader message="Cargando productos..." />
           ) : (
             <>
               {pageData && <Products result={pageData.content} />}

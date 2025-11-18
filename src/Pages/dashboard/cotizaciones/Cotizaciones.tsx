@@ -23,6 +23,7 @@ import SearchBar from "../../../Components/dashboard/searchbar/SearchBar";
 import MapCard from "../../../Components/dashboard/mapCard/MapCard";
 import { obtenerUsuario } from "../../../utils/auth";
 import { UserRoleConst } from "../../../models/Usuario/Usuario";
+import { Loader } from "../../../Components/loader/loader";
 
 function Cotizaciones() {
   const [cotizaciones, setCotizaciones] =
@@ -309,7 +310,7 @@ function Cotizaciones() {
 
       <div className={styles.tableContainer}>
         {loading ? (
-          <p>Cargando...</p>
+          <Loader message="Cargando cotizaciones..." />
         ) : (
           <DashboardTable
             columns={columns}

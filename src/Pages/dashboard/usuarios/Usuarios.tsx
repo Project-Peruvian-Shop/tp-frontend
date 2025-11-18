@@ -26,6 +26,7 @@ import ModalUsuarioCreate from "../../../Components/dashboard/Modals/Usuario/Mod
 import ModalUsuarioEdit from "../../../Components/dashboard/Modals/Usuario/ModalUsuarioEdit";
 import { UserRoleConst } from "../../../models/Usuario/Usuario";
 import { obtenerUsuario } from "../../../utils/auth";
+import { Loader } from "../../../Components/loader/loader";
 
 function Usuarios() {
   const [usuarios, setUsuarios] =
@@ -157,7 +158,7 @@ function Usuarios() {
           text: `El usuario ha sido editado correctamente.`,
         });
       }
-    }  catch (error: unknown) {
+    } catch (error: unknown) {
       let errorMessage = "Error al editar usuario";
 
       type AxiosErrorLike = {
@@ -274,7 +275,7 @@ function Usuarios() {
 
       <div className={styles.tableContainer}>
         {loading ? (
-          <p>Cargando...</p>
+          <Loader message="Cargando usuarios..." />
         ) : (
           <DashboardTable
             columns={columns}

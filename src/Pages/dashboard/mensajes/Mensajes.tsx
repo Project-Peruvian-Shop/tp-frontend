@@ -22,6 +22,7 @@ import ModalMensajes from "../../../Components/dashboard/Modals/Mensajes/ModalMe
 import { useNavigate } from "react-router-dom";
 import { UserRoleConst } from "../../../models/Usuario/Usuario";
 import { obtenerUsuario } from "../../../utils/auth";
+import { Loader } from "../../../Components/loader/loader";
 function Mensajes() {
   const [mensajes, setMensajes] =
     useState<PaginatedResponse<MensajeDashboardDTO>>();
@@ -239,7 +240,7 @@ function Mensajes() {
 
       <div className={styles.tableContainer}>
         {loading ? (
-          <p>Cargando...</p>
+          <Loader message="Cargando mensajes..." />
         ) : (
           <DashboardTable
             columns={columns}

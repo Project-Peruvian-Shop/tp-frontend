@@ -29,6 +29,7 @@ import SearchBar from "../../../Components/dashboard/searchbar/SearchBar";
 import { getAllCategories } from "../../../services/categoria.service";
 import { obtenerUsuario } from "../../../utils/auth";
 import { UserRoleConst } from "../../../models/Usuario/Usuario";
+import { Loader } from "../../../Components/loader/loader";
 
 export default function ProductosTable() {
   const [productos, setProductos] =
@@ -351,7 +352,7 @@ export default function ProductosTable() {
 
       <div className={styles.tableContainer}>
         {loading ? (
-          <p>Cargando...</p>
+          <Loader message="Cargando productos..." />
         ) : (
           <DashboardTable
             columns={columns}

@@ -25,6 +25,7 @@ import { createImagen } from "../../../services/imagen.service";
 import SearchBar from "../../../Components/dashboard/searchbar/SearchBar";
 import { UserRoleConst } from "../../../models/Usuario/Usuario";
 import { obtenerUsuario } from "../../../utils/auth";
+import { Loader } from "../../../Components/loader/loader";
 
 function Categorias() {
   const [categorias, setCategorias] =
@@ -138,7 +139,7 @@ function Categorias() {
         await loadCantidadCategorias();
         await fetchAll();
       }
-    }  catch (error: unknown) {
+    } catch (error: unknown) {
       let errorMessage = "Error al crear la línea";
 
       type AxiosErrorLike = {
@@ -201,7 +202,7 @@ function Categorias() {
         await loadCantidadCategorias();
         await fetchAll();
       }
-    }  catch (error: unknown) {
+    } catch (error: unknown) {
       let errorMessage = "Error al editar la línea";
 
       type AxiosErrorLike = {
@@ -337,7 +338,7 @@ function Categorias() {
 
       <div className={styles.tableContainer}>
         {loading ? (
-          <p>Cargando...</p>
+          <Loader message="Cargando líneas..." />
         ) : (
           <DashboardTable
             columns={columns}

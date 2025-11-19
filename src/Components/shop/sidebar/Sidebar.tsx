@@ -1,3 +1,4 @@
+import React from "react";
 import styles from "./Sidebar.module.css";
 import type { AllAndQuantityResponseDTO } from "../../../models/Categoria/Categoria_response";
 
@@ -17,17 +18,17 @@ function Sidebar(props: SidebarProps) {
 
       <div className={styles.listContainer}>
         {arrayCategories.map((category) => (
-          <>
+          <React.Fragment key={category.id}>
             <button
-              key={category.id}
               className={styles.categoryItem}
               onClick={() => onCategoryClick?.(category.id)}
             >
               {category.nombre} ({category.cantidad})
             </button>
             <div className={styles.divisor}></div>
-          </>
+          </React.Fragment>
         ))}
+
         <button
           className={styles.categoryItem}
           onClick={() => onCategoryClick?.(null)}

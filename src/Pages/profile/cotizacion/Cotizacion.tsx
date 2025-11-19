@@ -14,6 +14,7 @@ import type { PaginatedResponse } from "../../../services/global.interfaces";
 import type { ProductoCarritoDetalleDTO } from "../../../models/CotizacionDetalle/Cotizacion_detalle";
 import Banner from "../../../Components/banner/Banner";
 import ProductListCard2 from "../../../Components/dashboard/productlistcard/ProductListCard2";
+import QuoteCard from "../../../Components/shop/cotizacion/ModalEstadoCotizacion";
 // import ProductListCard from "../../Components/dashboard/productlistcard/ProductListCard";
 // import type { ProductoResponseDTO } from "../../models/Categoria/Categoria_response";
 // import type { PaginatedResponse } from "../../services/global.interfaces";
@@ -116,7 +117,7 @@ function Cotizacion() {
           <div className={styles.card}>
             {cotizacion?.cotizacionEnlace ? (
               <>
-                <div className={styles.pdfRow}>
+                {/* <div className={styles.pdfRow}>
                   <div className={styles.titlePDF}>PDF de la cotización</div>
 
                   <div className={styles.pdfButtons}>
@@ -158,7 +159,17 @@ function Cotizacion() {
                       Rechazar
                     </a>
                   </div>
-                </div>
+                </div> */}
+                <QuoteCard
+                  quote={{
+                    id: cotizacion.id.toString(),
+                    clientName: cotizacion.cliente,
+                    amount: "40",
+                    date: cotizacion.creacion,
+                    status: "rechazada",
+                    fileName: `cotizacion-${cotizacion.numero}.pdf`,
+                  }}
+                />
               </>
             ) : (
               <>

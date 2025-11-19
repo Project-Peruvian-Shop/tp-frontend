@@ -1,87 +1,158 @@
-.modalOverlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.45);
+.card {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	justify-content: flex-start;
+	align-items: center;
+	align-content: stretch;
+
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px 0;
+  transition: all 0.2s ease;
+}
+
+.card:hover {
+  border-color: var(--primary);
+}
+
+/* HEADER */
+.header {
   display: flex;
-  align-items: center;
-  justify-content: center;
+  justify-content: space-between;
+  align-items: flex-start;
 }
 
-.modalContent {
-  background: #fff;
-  padding: 2rem;
-  border-radius: 8px;
-  width: 500px;
-}
-
-.modalActions {
-  display: flex;
-  flex-direction: row-reverse;
-  justify-content: flex-end;
-  gap: 1rem;
-  margin-top: 1rem;
-}
-
-.addButton, .cancelButton {
-  flex: 1;
-  height: 45px;
-  font-family: "Poppins", sans-serif;
+.clientName {
+  font-size: 18px;
   font-weight: 600;
-  border-radius: 6px;
-  padding: 8px 16px;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
+  color: var(--foreground);
+  margin: 0;
 }
 
-.addButton {
-  background-color: var(--primary-color);
-  color: #fff;
-  border: 2px solid var(--primary-color);
+.quoteId {
+  font-size: 14px;
+  color: var(--muted-foreground);
+  margin: 0;
 }
-.addButton:hover {
-  background-color: #fff;
+
+/* STATUS BADGE */
+.statusBadge {
+  padding: 6px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+/* Status colors */
+.pendiente {
+  background: rgba(245, 158, 11, 0.1);
+  color: rgb(180, 83, 9);
+}
+
+.aceptada {
+  background: rgba(16, 185, 129, 0.1);
+  color: rgb(5, 122, 85);
+}
+
+.rechazada {
+  background: rgba(239, 68, 68, 0.1);
   color: var(--primary-color);
 }
 
-.cancelButton {
-  background-color: var(--secondary-color);
-  color: #fff;
-  border: 2px solid var(--secondary-color);
-}
-.cancelButton:hover {
-  background-color: #fff;
-  color: var(--secondary-color);
+/* AMOUNT */
+.amountContainer {
+  width: 50%;
+  margin-bottom: 24px;
 }
 
-.textarea {
-  width: 100%;
-  min-height: 80px;
-  padding: 8px;
-  margin-top: 4px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font-family: "Poppins", sans-serif;
+.amount {
+  font-size: 20px;
+  font-weight: 600;
+  margin: 0;
+  color: var(--foreground);
 }
 
-.select {
-  width: 100%;
-  padding: 10px 12px;
+.date {
+  font-size: 14px;
   margin-top: 4px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font-family: "Poppins", sans-serif;
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  background-color: #fff;
-  background-image: url("data:image/svg+xml,%3Csvg width='14' height='10' viewBox='0 0 14 10' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l6 6 6-6' stroke='%23999' stroke-width='2' fill='none'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 12px center;
-  background-size: 14px;
+  color: var(--gray);
+}
+
+/* ACTIONS */
+.actions {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* PDF BUTTONS */
+.pdfActions {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.pdfButton {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid var(--primary-color);
+  background: var(--white-color);
+  color: var(--primary-color);
+  font-weight: bold;
+  border-radius: 10px;
   cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  font-family: "Montserrat", sans-serif;
+  transition: background 0.2s ease;
 }
-@media (max-width:425px) {
-  .modalContent {
-    margin: 10px;
-  }
+
+.pdfButton:hover {
+  background: var(--primary-color);
+  color: var(--white-color);
+}
+
+.icon {
+  width: 16px;
+  height: 16px;
+}
+
+.pdfLabel {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* RESPONSE BUTTON */
+.responseBtn {
+  width: 100%;
+  padding: 10px;
+  border-radius: 10px;
+  font-weight: 600;
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  font-family: "Montserrat", sans-serif;
+  transition: all 0.2s ease;
+}
+
+.responseEnabled {
+  background: var(--primary-color);
+  color: var(--primary-color);
+}
+
+.responseEnabled:hover {
+  background: var(--primary-hover);
+}
+
+.responseDisabled {
+  background: var(--gray);
+  color: var(--white-color);
+  cursor: not-allowed;
 }

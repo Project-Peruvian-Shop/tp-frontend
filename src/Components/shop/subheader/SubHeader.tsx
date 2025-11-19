@@ -84,10 +84,11 @@ export default function SubHeader({ title }: SubHeaderProps) {
         <div className={styles.titleContainer}>
           <Link to={routes.shop} className={styles.storeTitle}>
             {title}
-            <Link to={routes.shop_cart} className={styles.cartSecondaryButton}>
-              <IconSVG name="cart" size={20} className={styles.cartIcon} />
-              <span className={styles.cartBadge}>{cantidadCarrito}</span>
-            </Link>
+          </Link>
+
+          <Link to={routes.shop_cart} className={styles.cartSecondaryButton}>
+            <IconSVG name="cart" size={20} className={styles.cartIcon} />
+            <span className={styles.cartBadge}>{cantidadCarrito}</span>
           </Link>
         </div>
 

@@ -139,7 +139,7 @@ function Cotizacion() {
                 </div>
 
                 <div className={styles.pdfRow}>
-                  <div className={styles.titlePDF}>Responder</div>
+                  <div className={styles.titlePDF}>Respuesta</div>
 
                   <div className={styles.pdfButtons}>
                     <a

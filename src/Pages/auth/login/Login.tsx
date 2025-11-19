@@ -15,7 +15,7 @@ import IconSVG from "../../../Icons/IconSVG";
 import Error from "../../../Components/Errortxt/Error";
 import logo from "../../../Icons/Logo-HD.png";
 function Login() {
-  const title = "Bienvenido de vuelta";
+  const title = "Bienvenido nuevamente";
   const subtitle = "Solicita tus cotizaciones de manera rápida y confiable";
   const list = [
     "Productos con calidad garantizada",

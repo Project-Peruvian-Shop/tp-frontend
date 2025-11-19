@@ -4,7 +4,12 @@ import {
   SummaryCard,
   type PeriodSummaryCard,
 } from "../../../Components/dashboard/summarycard/SummaryCard";
-import { agregarAuthToken, agregarRefreshToken, agregarUsuario, obtenerUsuario } from "../../../utils/auth";
+import {
+  agregarAuthToken,
+  agregarRefreshToken,
+  agregarUsuario,
+  obtenerUsuario,
+} from "../../../utils/auth";
 import type {
   CategoriaCotizadaDTO,
   CotizacionesPorMesDTO,
@@ -42,6 +47,8 @@ function Dashboard() {
   const [productos, setProductos] = useState<ProductoCotizadoDTO[]>([]);
   const [categorias, setCategorias] = useState<CategoriaCotizadaDTO[]>([]);
 
+  const [loadingRefresh, setLoadingRefresh] = useState(false);
+
   const checkAndRefreshToken = async (refreshToken: string) => {
     try {
       const newToken = await obtenerNuevoToken(refreshToken);
@@ -60,13 +67,45 @@ function Dashboard() {
       }).then(() => {
         navigate(routes.login);
         console.log(error);
-        
       });
     }
   };
+
+  const obtenerRegistros = async () => {
+    try {
+      setLoadingRefresh(true);
+
+      const dataKpis = await getKPIS(period);
+      setKpis(dataKpis);
+
+      const dataCot = await getCotizaciones();
+      setCotizaciones(dataCot);
+
+      const dataProd = await getProductos(
+        modo,
+        new Date().getMonth() + 1,
+        new Date().getFullYear()
+      );
+      setProductos(dataProd);
+
+      const dataCat = await getCategorias(
+        modo,
+        new Date().getMonth() + 1,
+        new Date().getFullYear()
+      );
+      setCategorias(dataCat);
+    } finally {
+      setLoadingRefresh(false);
+    }
+  };
+
+  const handleRefresh = () => {
+    obtenerRegistros();
+  };
+
   useEffect(() => {
     const localUser = obtenerUsuario();
-  
+
     if (!localUser) {
       navigate(routes.login);
       return;
@@ -74,19 +113,17 @@ function Dashboard() {
     const fetchData = async () => {
       try {
         await checkAndRefreshToken(localUser.refreshToken);
-  
       } catch {
         MySwal.fire({
           icon: "error",
           title: "Error",
           text: "No se pudieron cargar los datos del perfil o cotizaciones",
         });
-      } 
+      }
     };
     fetchData();
-    
   }, [navigate]);
-  
+
   useEffect(() => {
     const fetchKPIS = async () => {
       try {
@@ -140,7 +177,14 @@ function Dashboard() {
   return (
     <div>
       <div className={styles.dashboardHeader}>
-        <div className={styles.title}>Bienvenido, {usuario?.nombre} </div>
+        <div className={styles.title}>Bienvenido, {usuario?.nombre}</div>
+        <button
+          className={styles.refreshButton}
+          onClick={handleRefresh}
+          disabled={loadingRefresh}
+        >
+          {loadingRefresh ? "Actualizando..." : "Actualizar"}
+        </button>
       </div>
 
       <div className={styles.container}>

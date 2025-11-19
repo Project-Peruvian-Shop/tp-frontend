@@ -12,6 +12,28 @@
   font-size: 24px;
 }
 
+.refreshButton {
+  padding: 8px 16px;
+  background: transparent;
+  border: 1px solid var(--secondary-color);
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: "Montserrat", sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  transition: 0.2s ease;
+}
+
+.refreshButton:hover {
+  border-color: var(--primary-color);
+  background: var(--primary-color);
+  color: white;
+}
+
+.refreshButton:active {
+  transform: scale(0.97);
+}
+
 .container {
   height: 75vh;
   display: flex;
@@ -118,13 +140,12 @@
 @media (max-width: 992px) {
   .container {
     flex-direction: column;
-
   }
 
   .right {
-    order: -1; 
+    order: -1;
   }
-  .cotizaciones{
+  .cotizaciones {
     width: 100%;
   }
   .chartsContainer {

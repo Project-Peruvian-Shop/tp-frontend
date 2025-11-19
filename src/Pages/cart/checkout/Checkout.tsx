@@ -49,7 +49,7 @@ function Checkout() {
   useEffect(() => {
     if (usuario) {
       // Cargar los valores del usuario en el formulario
-      setNombre(usuario.nombre || "");
+      setNombre(usuario.nombre + " " + usuario.apellidos || "");
       setEmail(usuario.email || "");
       setTipoDocumento(usuario.tipoDocumento || "");
       setNumeroDocumento(usuario.documento || "");

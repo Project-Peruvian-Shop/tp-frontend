@@ -28,6 +28,8 @@ import { UserRoleConst } from "../../../models/Usuario/Usuario";
 import type { ProductoCarritoDetalleDTO } from "../../../models/CotizacionDetalle/Cotizacion_detalle";
 import type { PaginatedResponse } from "../../../services/global.interfaces";
 import ProductListCard2 from "../../../Components/dashboard/productlistcard/ProductListCard2";
+import emailjs from "@emailjs/browser";
+
 function CotizacionDetalle() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
@@ -205,6 +207,8 @@ function CotizacionDetalle() {
       const result = await uploadCotizacionPDF(cotizacion.id, selectedFile);
       setPdfPreview(result.archivo);
       await fetchCotizacion(cotizacion.id);
+      await change_state(cotizacion.id, "ENVIADA", "Se ha subido el PDF de la cotización.");
+      await fetchCotizacion(cotizacion.id);
       setSelectedFile(null);
 
       Swal.fire({
@@ -220,6 +224,39 @@ function CotizacionDetalle() {
         text: "No se pudo subir el archivo. Intenta nuevamente.",
       });
     }
+  };
+  const handleSendEmail = async () => {
+    if (!cotizacion) return;
+      const EMAILJS_SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+      const EMAILJS_TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+      const EMAILJS_PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+
+  try {
+    await emailjs.send(
+      EMAILJS_SERVICE_ID,
+      EMAILJS_TEMPLATE_ID,
+      {
+        cliente_nombre: cotizacion.cliente,
+        to_email: cotizacion.email,
+        numero_cotizacion: cotizacion.numero,
+        enlace_pdf: cotizacion.cotizacionEnlace,
+      },
+      {  publicKey: EMAILJS_PUBLIC_KEY }
+    );
+
+    Swal.fire({
+      icon: "success",
+      title: "Correo enviado",
+      text: "La cotización fue enviada correctamente al cliente.",
+    });
+  }catch (error) {
+    console.error(error);
+    Swal.fire({
+      icon: "error",
+      title: "Error",
+      text: "No se pudo enviar el correo.",
+    });
+  }
   };
 
   return (
@@ -364,20 +401,12 @@ function CotizacionDetalle() {
                   Descargar PDF
                 </a>
                 {/* Enviar por link de PDF por correo */}
-                <a
-                  href={`https://outlook.office.com/mail/deeplink/compose?to=${
-                    cotizacion?.email
-                  }&subject=${encodeURIComponent(
-                    `Cotización N° ${cotizacion?.numero}`
-                  )}&body=${encodeURIComponent(
-                    `Estimado(a) ${cotizacion?.cliente},\n\nPuede descargar su cotización aquí:\n${cotizacion?.cotizacionEnlace}`
-                  )}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <button
+                  onClick={handleSendEmail}
                   className={styles.pdfButton}
                 >
                   Mandar PDF por correo
-                </a>
+                </button>
                 {/* Enviar por link de PDF por whatsapp */}
                 <a
                   href={`https://wa.me/${
@@ -427,9 +456,9 @@ function CotizacionDetalle() {
                             e.preventDefault();
                             const file = e.dataTransfer.files[0];
                             if (file && file.type === "application/pdf") {
-                              setSelectedFile(file);
                               setPdfPreview(URL.createObjectURL(file));
                             }
+                              setSelectedFile(file);
                           }}
                           onClick={() =>
                             document.getElementById("fileInput")?.click()

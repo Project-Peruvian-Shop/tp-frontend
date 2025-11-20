@@ -19,9 +19,6 @@ import type { ProductoCarritoDetalleDTO } from "../../../models/CotizacionDetall
 import Banner from "../../../Components/banner/Banner";
 import ProductListCard2 from "../../../Components/dashboard/productlistcard/ProductListCard2";
 import QuoteCard from "../../../Components/shop/cotizacion/ModalEstadoCotizacion";
-// import ProductListCard from "../../Components/dashboard/productlistcard/ProductListCard";
-// import type { ProductoResponseDTO } from "../../models/Categoria/Categoria_response";
-// import type { PaginatedResponse } from "../../services/global.interfaces";
 
 type EstadoStatus = "enviada" | "aceptada" | "rechazada";
 
@@ -41,11 +38,7 @@ function Cotizacion() {
     useState<PaginatedResponse<ProductoCarritoDetalleDTO>>();
   const [page, setPage] = useState(0);
 
-  const [estado, setEstado] = useState<estadoType>({
-    estado: "enviada",
-    remitente: "",
-    fechaEnvio: "",
-  });
+  const [estado, setEstado] = useState<estadoType | null>(null);
 
   useEffect(() => {
     if (!id) {
@@ -85,8 +78,8 @@ function Cotizacion() {
   ): estadoType | null {
     for (const h of historial) {
       if (
-        h.estadoAnterior === "ENVIADA" &&
-        (h.estadoNuevo === "ACEPTADA" || h.estadoNuevo === "RECHAZADA")
+        (h.estadoAnterior === "PENDIENTE" || h.estadoAnterior === "EN_PROCESO") &&
+        (h.estadoNuevo === "ENVIADA" || h.estadoNuevo === "ACEPTADA" || h.estadoNuevo === "RECHAZADA")
       ) {
         return {
           estado: h.estadoNuevo.toLowerCase() as EstadoStatus,
@@ -161,22 +154,23 @@ function Cotizacion() {
           />
 
           <div className={styles.card}>
-            {cotizacion?.cotizacionEnlace ? (
-              <>
-                <QuoteCard
-                  quote={{
-                    id: cotizacion.id.toString(),
-                    clientName: estado.remitente,
-                    date: estado.fechaEnvio,
-                    status: estado.estado as EstadoStatus,
-                    fileName: cotizacion.cotizacionEnlace,
-                  }}
-                />
-              </>
+            {cotizacion?.cotizacionEnlace && estado ? (
+              <QuoteCard
+                quote={{
+                  id: cotizacion.id.toString(),
+                  clientName: estado.remitente,
+                  date: estado.fechaEnvio,
+                  status: estado.estado,
+                  fileName: cotizacion.cotizacionEnlace,
+                }}
+              />
             ) : (
               <>
-                <div className={styles.titlePDF}>PDF de la cotización</div>
-                <p>No se ha subido ningún PDF aún.</p>
+                <div className={styles.titlePDF}>Sin respuesta aún</div>
+                <p>
+                  Tu cotización todavía está en espera. Un asesor la revisará
+                  pronto.
+                </p>
               </>
             )}
           </div>

@@ -144,7 +144,7 @@
 
 .responseEnabled {
   background: var(--primary-color);
-  color: var(--primary-color);
+  color: var(--white-color);
 }
 
 .responseEnabled:hover {

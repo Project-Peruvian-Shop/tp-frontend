@@ -76,7 +76,7 @@
 
 .date {
   font-size: 14px;
-  margin-top: 4px;
+  margin: 0px;
   color: var(--gray);
 }
 

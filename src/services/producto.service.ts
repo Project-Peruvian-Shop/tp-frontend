@@ -83,6 +83,11 @@ export async function updateProducto(
   return res.data.data;
 }
 
+export async function deleteProducto(id: number): Promise<void> {
+  const url = `${BASE_URL}/${id}`;
+  await api.delete<ApiResponse<void>>(url);
+}
+
 export async function getQuantityProductos(): Promise<number> {
   const url = `${BASE_URL}/dashboard-quantity`;
   const res = await api.get<ApiResponse<number>>(url);

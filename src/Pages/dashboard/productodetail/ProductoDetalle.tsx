@@ -2,7 +2,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import type { ProductoDTO } from "../../../models/Producto/Producto_response_dto";
 import styles from "./ProductoDetalle.module.css";
 import { useEffect, useState } from "react";
-import { getProductoById } from "../../../services/producto.service";
+import { deleteProducto, getProductoById } from "../../../services/producto.service";
 import { routes } from "../../../utils/routes";
 import ButtonHeader from "../../../Components/dashboard/buttonheader/ButtonHeader";
 import InfoCard from "../../../Components/dashboard/infocard/InfoCard";
@@ -136,6 +136,37 @@ function ProductoDetalle() {
       });
     }
   };
+  const handleDeleteProduct = async (producto : ProductoDTO) => {
+    const result = await MySwal.fire({
+          title: "¿Estás seguro?",
+          text: `Esta acción eliminará el producto ${producto.nombre}.`,
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonText: "Sí, eliminar",
+          cancelButtonText: "Cancelar",
+        });
+    
+        if (result.isConfirmed) {
+          try {
+            await deleteProducto(producto.id);
+            navigate(routes.dashboard_products);
+            MySwal.fire({
+              icon: "success",
+              title: "Producto eliminado",
+              text: `El producto ${producto.nombre} ha sido eliminado.`,
+            });
+          } catch (error) {
+            MySwal.fire({
+              icon: "error",
+              title: "Error",
+              text: "Error al eliminar el producto.",
+            });
+            console.log(error);
+            
+          }
+        }
+
+  }
   return (
     <div className={styles.container}>
       <div className={styles.header}>
@@ -163,7 +194,7 @@ function ProductoDetalle() {
             />
             <ButtonHeader
               title="Eliminar"
-              onClick={() => console.log("Acciones")}
+              onClick={() => handleDeleteProduct(producto!)}
               icon="delete-primary"
               size={24}
               style="primary-outline"

@@ -90,3 +90,8 @@ export async function updateUser(
 
   return res.data.data;
 }
+export async function deleteUser(id: number): Promise<void> {
+  const url = `${BASE_URL}/delete/${id}`;
+
+  await api.delete<ApiResponse<void>>(url);
+}

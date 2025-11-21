@@ -7,6 +7,7 @@ import type {
 import DashboardTable from "../../../Components/dashboard/table/DashboardTable";
 import { useEffect, useState } from "react";
 import {
+  deleteUser,
   getAllUsuarios,
   getQuantityUsuarios,
   getSearchUsuarios,
@@ -184,6 +185,38 @@ function Usuarios() {
       });
     }
   };
+  const handleDeleteUser = async (user: UsuarioDashboardDTO) => {
+    const result = await MySwal.fire({
+      title: "¿Estás seguro?",
+      text: `Esta acción eliminará al usuario ${user.nombre} ${user.apellidos}.`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Sí, eliminar",
+      cancelButtonText: "Cancelar",
+    });
+
+    if (result.isConfirmed) {
+      try {
+        await deleteUser(user.id);
+        fetchAll(page);
+        loadCantidadUsuarios();
+        MySwal.fire({
+          icon: "success",
+          title: "Usuario eliminado",
+          text: `El usuario ${user.nombre} ha sido eliminado correctamente.`,
+        });
+      } catch (error) {
+        MySwal.fire({
+          icon: "error",
+          title: "Error",
+          text: "Error al eliminar el usuario.",
+          
+        });
+        console.log(error);
+        
+      }
+    }
+  };
 
   // Definición de columnas
   const columns: Column<UsuarioDashboardDTO>[] = [
@@ -232,7 +265,7 @@ function Usuarios() {
         label: "Eliminar",
         icon: <IconSVG name="delete-secondary" size={20} />,
         onClick: (row) => {
-          console.log("Eliminar usuario", row);
+          handleDeleteUser(row);
         },
       }
     );

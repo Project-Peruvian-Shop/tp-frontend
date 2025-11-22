@@ -106,3 +106,8 @@ export async function updateCategoria(
 
   return res.data.data;
 }
+export async function deleteCategoria(id: number): Promise<void> {
+  const url = `${BASE_URL}/${id}`;
+
+  await api.delete<ApiResponse<void>>(url);
+}

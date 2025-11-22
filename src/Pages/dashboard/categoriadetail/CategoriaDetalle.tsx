@@ -3,6 +3,7 @@ import styles from "./CategoriaDetalle.module.css";
 import { useEffect, useState } from "react";
 import { routes } from "../../../utils/routes";
 import {
+  deleteCategoria,
   getCategoryById,
   getProductosByCategoryId,
   updateCategoria,
@@ -150,6 +151,55 @@ function CategoriaDetalle() {
       });
     }
   };
+  const handleDeleteCategoria = async (categoria: CategoriaDashboardDTO) => {
+    const result = await MySwal.fire({
+      title: "¿Estás seguro?",
+      text: `Esta acción eliminará la categoría ${categoria.nombre}.`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Sí, eliminar",
+      cancelButtonText: "Cancelar",
+    });
+  
+    if (!result.isConfirmed) return;
+  
+    try {
+      await deleteCategoria(categoria.id);
+      navigate(routes.dashboard_categories);
+      MySwal.fire({
+        icon: "success",
+        title: "Categoría eliminada",
+        text: `La categoría ${categoria.nombre} ha sido eliminada.`,
+      });
+  
+    } catch (error: unknown) {
+    const err = error as { response?: { data?: { message?: string } } };
+  
+    const backendMessage = err?.response?.data?.message || "";
+    
+    if (backendMessage.includes("productos asociados")) {
+      MySwal.fire({
+        icon: "info",
+        title: "No se puede eliminar",
+        html: `
+          La categoría <b>${categoria.nombre}</b> no puede eliminarse
+          porque tiene <b>productos asociados</b>.<br><br>
+          <strong>Debes cambiar la línea de esos productos primero.</strong>
+        `,
+      });
+      return;
+    }
+  
+    MySwal.fire({
+      icon: "error",
+      title: "Error",
+      text: "Error al eliminar la categoría.",
+    });
+  
+    console.error(error);
+  }
+  
+  };
 
   return (
     <div className={styles.container}>
@@ -176,7 +226,7 @@ function CategoriaDetalle() {
             />
             <ButtonHeader
               title="Eliminar"
-              onClick={() => console.log("Acciones")}
+              onClick={() => handleDeleteCategoria(categoria!)}
               icon="delete-primary"
               size={24}
               style="primary-outline"

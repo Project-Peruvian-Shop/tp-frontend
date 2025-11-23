@@ -9,7 +9,7 @@
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: 12px;
-  padding: 20px 0;
+  padding: 14px 0;
   transition: all 0.2s ease;
 }
 
@@ -85,7 +85,6 @@
   width: 50%;
   display: flex;
   flex-direction: column;
-  gap: 12px;
 }
 
 /* PDF BUTTONS */
@@ -133,22 +132,24 @@
   padding: 10px;
   border-radius: 10px;
   font-weight: 600;
-  border: none;
+  border: 1px solid var(--secondary-color);
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 8px;
   font-family: "Montserrat", sans-serif;
   transition: all 0.2s ease;
+  cursor: pointer;
 }
 
 .responseEnabled {
-  background: var(--primary-color);
-  color: var(--white-color);
+  background: var(--white-color);
+  color: var(--secondary-color);
 }
 
 .responseEnabled:hover {
-  background: var(--primary-hover);
+  background: var(--secondary-color);
+  color: var(--white-color);
 }
 
 .responseDisabled {

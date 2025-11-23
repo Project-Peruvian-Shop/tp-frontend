@@ -1,7 +1,7 @@
-import { useState } from "react";
-// import { Download, Eye, MessageSquare } from "lucide-react";
-// import ActionModal from "./action-modal";
 import styles from "./ModalEstadoCotizacion.module.css";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+import { change_state } from "../../../services/cotizacion.service";
 
 export interface Quote {
   id: string;
@@ -23,12 +23,47 @@ const formatDate = (dateString: string): string => {
 };
 
 export default function QuoteCard({ quote }: { quote: Quote }) {
-  const [showModal, setShowModal] = useState(false);
+  const MySwal = withReactContent(Swal);
 
   const statusLabels = {
     enviada: "Enviada",
     aceptada: "Aceptada",
     rechazada: "Rechazada",
+  };
+
+  const handleResponder = async () => {
+    const result = await MySwal.fire({
+      title: "Responder cotización",
+      html: `
+      <textarea id="comentario" class="swal2-textarea" placeholder="Comentario (opcional)"></textarea>
+    `,
+      showCancelButton: true,
+      showDenyButton: true,
+      confirmButtonText: "Aceptar",
+      denyButtonText: "Rechazar",
+      cancelButtonText: "Cancelar",
+      focusConfirm: false,
+      preConfirm: () => {
+        return (document.getElementById("comentario") as HTMLTextAreaElement)
+          .value;
+      },
+    });
+
+    if (result.isConfirmed || result.isDenied) {
+      const comentario = result.value ?? "";
+      const estado = result.isConfirmed ? "ACEPTADA" : "RECHAZADA";
+
+      try {
+        await change_state(parseInt(quote.id), estado, comentario);
+        Swal.fire(
+          "¡Listo!",
+          `Cotización ${estado.toLowerCase()} correctamente.`,
+          "success"
+        );
+      } catch (error) {
+        Swal.fire("Error", "No se pudo enviar la respuesta " + error, "error");
+      }
+    }
   };
 
   return (
@@ -73,7 +108,7 @@ export default function QuoteCard({ quote }: { quote: Quote }) {
 
           {/* RESPONSE BUTTON */}
           <button
-            onClick={() => setShowModal(true)}
+            onClick={handleResponder}
             disabled={quote.status !== "enviada"}
             className={`${styles.responseBtn} ${
               quote.status === "enviada"
@@ -81,15 +116,12 @@ export default function QuoteCard({ quote }: { quote: Quote }) {
                 : styles.responseDisabled
             }`}
           >
-            {/* <MessageSquare className={styles.icon} /> */}
             {quote.status === "enviada"
               ? "Responder"
               : `${statusLabels[quote.status]} anteriormente`}
           </button>
         </div>
       </div>
-
-      {/* <ActionModal quote={quote} open={showModal} onOpenChange={setShowModal} /> */}
     </>
   );
 }

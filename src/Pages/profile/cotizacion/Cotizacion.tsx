@@ -76,13 +76,13 @@ function Cotizacion() {
   function obtenerEstadoEnvio(
     historial: CotizacionHistorialDTO[]
   ): estadoType | null {
-    for (const h of historial) {
+    for (let i = historial.length - 1; i >= 0; i--) {
+      const h = historial[i];
+
       if (
-        (h.estadoAnterior === "PENDIENTE" ||
-          h.estadoAnterior === "EN_PROCESO") &&
-        (h.estadoNuevo === "ENVIADA" ||
-          h.estadoNuevo === "ACEPTADA" ||
-          h.estadoNuevo === "RECHAZADA")
+        h.estadoNuevo === "ENVIADA" ||
+        h.estadoNuevo === "ACEPTADA" ||
+        h.estadoNuevo === "RECHAZADA"
       ) {
         return {
           estado: h.estadoNuevo.toLowerCase() as EstadoStatus,
@@ -91,6 +91,7 @@ function Cotizacion() {
         };
       }
     }
+
     return null;
   }
 

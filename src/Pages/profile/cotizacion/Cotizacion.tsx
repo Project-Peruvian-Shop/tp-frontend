@@ -78,8 +78,11 @@ function Cotizacion() {
   ): estadoType | null {
     for (const h of historial) {
       if (
-        (h.estadoAnterior === "PENDIENTE" || h.estadoAnterior === "EN_PROCESO") &&
-        (h.estadoNuevo === "ENVIADA" || h.estadoNuevo === "ACEPTADA" || h.estadoNuevo === "RECHAZADA")
+        (h.estadoAnterior === "PENDIENTE" ||
+          h.estadoAnterior === "EN_PROCESO") &&
+        (h.estadoNuevo === "ENVIADA" ||
+          h.estadoNuevo === "ACEPTADA" ||
+          h.estadoNuevo === "RECHAZADA")
       ) {
         return {
           estado: h.estadoNuevo.toLowerCase() as EstadoStatus,

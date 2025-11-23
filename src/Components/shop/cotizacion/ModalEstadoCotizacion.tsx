@@ -50,7 +50,7 @@ export default function QuoteCard({ quote }: { quote: Quote }) {
     });
 
     if (result.isConfirmed || result.isDenied) {
-      const comentario = result.value ?? "";
+      const comentario = typeof result.value === "string" ? result.value : "";
       const estado = result.isConfirmed ? "ACEPTADA" : "RECHAZADA";
 
       try {
@@ -60,6 +60,7 @@ export default function QuoteCard({ quote }: { quote: Quote }) {
           `Cotización ${estado.toLowerCase()} correctamente.`,
           "success"
         );
+        window.location.reload();
       } catch (error) {
         Swal.fire("Error", "No se pudo enviar la respuesta " + error, "error");
       }

@@ -1,10 +1,11 @@
-import styles from "./ModalEstadoCotizacion.module.css";
+import styles from "./ResponseCard.module.css";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { change_state } from "../../../services/cotizacion.service";
 
-export interface Quote {
-  id: string;
+export interface Data {
+  id: number;
+  cotizacionId: string;
   clientName: string;
   date: string;
   status: "enviada" | "aceptada" | "rechazada";
@@ -22,7 +23,7 @@ const formatDate = (dateString: string): string => {
   });
 };
 
-export default function QuoteCard({ quote }: { quote: Quote }) {
+export default function ResponseCard({ data }: { data: Data }) {
   const MySwal = withReactContent(Swal);
 
   const statusLabels = {
@@ -54,7 +55,7 @@ export default function QuoteCard({ quote }: { quote: Quote }) {
       const estado = result.isConfirmed ? "ACEPTADA" : "RECHAZADA";
 
       try {
-        await change_state(parseInt(quote.id), estado, comentario);
+        await change_state(data.id, estado, comentario);
         Swal.fire(
           "¡Listo!",
           `Cotización ${estado.toLowerCase()} correctamente.`,
@@ -73,11 +74,11 @@ export default function QuoteCard({ quote }: { quote: Quote }) {
         {/* HEADER */}
         <div className={styles.amountContainer}>
           <h3 className={styles.clientName}>Atendido por</h3>
-          <p className={styles.amount}>{quote.clientName}</p>
+          <p className={styles.amount}>{data.clientName}</p>
           <p className={styles.date} style={{ marginTop: "8px" }}>
             Enviado el
           </p>
-          <p className={styles.date}>{formatDate(quote.date)}</p>
+          <p className={styles.date}>{formatDate(data.date)}</p>
         </div>
 
         {/* ACTIONS */}
@@ -86,7 +87,7 @@ export default function QuoteCard({ quote }: { quote: Quote }) {
             {/* Botón Ver */}
             <button
               className={styles.pdfButton}
-              onClick={() => window.open(quote.fileName, "_blank")}
+              onClick={() => window.open(data.fileName, "_blank")}
             >
               <span className={styles.pdfLabel}>Ver PDF</span>
             </button>
@@ -94,13 +95,20 @@ export default function QuoteCard({ quote }: { quote: Quote }) {
             {/* Botón Descargar */}
             <button
               className={styles.pdfButton}
-              onClick={() => {
+              onClick={async () => {
+                const response = await fetch(data.fileName);
+                const blob = await response.blob();
+                const url = window.URL.createObjectURL(blob);
+
                 const link = document.createElement("a");
-                link.href = quote.fileName;
-                link.download = `cotizacion-${quote.id}.pdf`;
+                link.href = url;
+                link.download = `cotizacion-${data.cotizacionId}.pdf`;
+
                 document.body.appendChild(link);
                 link.click();
-                document.body.removeChild(link);
+                link.remove();
+
+                window.URL.revokeObjectURL(url);
               }}
             >
               <span className={styles.pdfLabel}>Descargar PDF</span>
@@ -110,16 +118,16 @@ export default function QuoteCard({ quote }: { quote: Quote }) {
           {/* RESPONSE BUTTON */}
           <button
             onClick={handleResponder}
-            disabled={quote.status !== "enviada"}
+            disabled={data.status !== "enviada"}
             className={`${styles.responseBtn} ${
-              quote.status === "enviada"
+              data.status === "enviada"
                 ? styles.responseEnabled
                 : styles.responseDisabled
             }`}
           >
-            {quote.status === "enviada"
+            {data.status === "enviada"
               ? "Responder"
-              : `${statusLabels[quote.status]} anteriormente`}
+              : `${statusLabels[data.status]} anteriormente`}
           </button>
         </div>
       </div>

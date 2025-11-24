@@ -18,7 +18,7 @@ import type { PaginatedResponse } from "../../../services/global.interfaces";
 import type { ProductoCarritoDetalleDTO } from "../../../models/CotizacionDetalle/Cotizacion_detalle";
 import Banner from "../../../Components/banner/Banner";
 import ProductListCard2 from "../../../Components/dashboard/productlistcard/ProductListCard2";
-import QuoteCard from "../../../Components/shop/cotizacion/ModalEstadoCotizacion";
+import ResponseCard from "../../../Components/shop/cotizacion/ResponseCard";
 
 type EstadoStatus = "enviada" | "aceptada" | "rechazada";
 
@@ -159,9 +159,10 @@ function Cotizacion() {
 
           <div className={styles.card}>
             {cotizacion?.cotizacionEnlace && estado ? (
-              <QuoteCard
-                quote={{
-                  id: cotizacion.id.toString(),
+              <ResponseCard
+                data={{
+                  id: cotizacion.id,
+                  cotizacionId: cotizacion.numero.toString(),
                   clientName: estado.remitente,
                   date: estado.fechaEnvio,
                   status: estado.estado,

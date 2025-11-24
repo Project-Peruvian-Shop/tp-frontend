@@ -47,7 +47,7 @@ const Questions_frecuenly = () => {
         <div className={styles.questionsFooter}>
           <div className={styles.footerBox}>
             <span>¿Tienes más preguntas?</span>
-            <Link to="/contacto">
+            <Link to="/contactenos">
               <button>Contáctanos</button>
             </Link>
           </div>

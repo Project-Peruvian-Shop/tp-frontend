@@ -1,9 +1,9 @@
 export const routes = {
   // Public - Landing
   home: "/",
-  about: "/about",
+  about: "/quienes-somos",
   questions: "/preguntas-frecuentes",
-  contact: "/contacto",
+  contact: "/contactenos",
   complaints_book: "/libro-reclamaciones",
   tyc: "/terminos-condiciones",
   privacy_policy: "/politica-privacidad",

@@ -10,6 +10,7 @@ export interface Data {
   date: string;
   status: "enviada" | "aceptada" | "rechazada";
   fileName: string;
+  usuarioId: number;
 }
 
 const formatDate = (dateString: string): string => {
@@ -55,7 +56,7 @@ export default function ResponseCard({ data }: { data: Data }) {
       const estado = result.isConfirmed ? "ACEPTADA" : "RECHAZADA";
 
       try {
-        await change_state(data.id, estado, comentario);
+        await change_state(data.id, estado, comentario, data.usuarioId);
         Swal.fire(
           "¡Listo!",
           `Cotización ${estado.toLowerCase()} correctamente.`,

@@ -19,6 +19,7 @@ import type { ProductoCarritoDetalleDTO } from "../../../models/CotizacionDetall
 import Banner from "../../../Components/banner/Banner";
 import ProductListCard2 from "../../../Components/dashboard/productlistcard/ProductListCard2";
 import ResponseCard from "../../../Components/shop/cotizacion/ResponseCard";
+import { obtenerUsuario } from "../../../utils/auth";
 
 type EstadoStatus = "enviada" | "aceptada" | "rechazada";
 
@@ -39,6 +40,8 @@ function Cotizacion() {
   const [page, setPage] = useState(0);
 
   const [estado, setEstado] = useState<estadoType | null>(null);
+
+  const usuarioId = obtenerUsuario().id ? obtenerUsuario().id : 1;
 
   useEffect(() => {
     if (!id) {
@@ -167,6 +170,7 @@ function Cotizacion() {
                   date: estado.fechaEnvio,
                   status: estado.estado,
                   fileName: cotizacion.cotizacionEnlace,
+                  usuarioId: usuarioId,
                 }}
               />
             ) : (

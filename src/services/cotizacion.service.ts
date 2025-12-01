@@ -112,13 +112,15 @@ export async function change_state(
     | "ACEPTADA"
     | "RECHAZADA"
     | "CERRADA",
-  observacion: string
+  observacion: string,
+  usuarioId: number
 ): Promise<CotizacionChangeStateDTO> {
   const url = `${BASE_URL}/change-state/${id}`;
 
   const res = await api.put<ApiResponse<CotizacionChangeStateDTO>>(url, {
     nuevoEstado,
     observacion,
+    usuarioId,
   });
 
   return res.data.data;

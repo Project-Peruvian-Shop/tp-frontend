@@ -56,6 +56,11 @@
   font-size: 14px;
   color: var(--primary-color);
 }
+
+.noItems {
+  margin-bottom: 20px;
+}
+
 /* ====== RESPONSIVE ====== */
 @media (max-width: 992px) {
   .productItem {

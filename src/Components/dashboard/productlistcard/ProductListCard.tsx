@@ -29,19 +29,23 @@ const ProductListCard: React.FC<ProductListCardProps> = ({
     <div className={styles.card}>
       <div className={styles.subtitle}>{title}</div>
       <div className={styles.productList}>
-        {items.map((item) => (
-          <div className={styles.productItem} key={item.id}>
-            <img
-              src={item.imagenUrl}
-              alt={item.imagenAlt}
-              className={styles.productImage}
-            />
-            <span className={styles.productName}>{item.nombre}</span>
-            {item.cantidad !== undefined && (
-              <span className={styles.productCantidad}>{item.cantidad}</span>
-            )}
-          </div>
-        ))}
+        {items.length === 0 ? (
+          <div className={styles.noItems}>No existen productos asociados.</div>
+        ) : (
+          items.map((item) => (
+            <div className={styles.productItem} key={item.id}>
+              <img
+                src={item.imagenUrl}
+                alt={item.imagenAlt}
+                className={styles.productImage}
+              />
+              <span className={styles.productName}>{item.nombre}</span>
+              {item.cantidad !== undefined && (
+                <span className={styles.productCantidad}>{item.cantidad}</span>
+              )}
+            </div>
+          ))
+        )}
       </div>
 
       <Pagination

@@ -27,6 +27,7 @@ import SearchBar from "../../../Components/dashboard/searchbar/SearchBar";
 import { UserRoleConst } from "../../../models/Usuario/Usuario";
 import { obtenerUsuario } from "../../../utils/auth";
 import { Loader } from "../../../Components/loader/loader";
+import { downloadExcel } from "../../../utils/excel";
 
 function Categorias() {
   const [categorias, setCategorias] =
@@ -229,58 +230,55 @@ function Categorias() {
       });
     }
   };
-const handleDeleteCategoria = async (categoria: CategoriaDashboardDTO) => {
-  const result = await MySwal.fire({
-    title: "¿Estás seguro?",
-    text: `Esta acción eliminará la categoría ${categoria.nombre}.`,
-    icon: "warning",
-    showCancelButton: true,
-    confirmButtonText: "Sí, eliminar",
-    cancelButtonText: "Cancelar",
-  });
-
-  if (!result.isConfirmed) return;
-
-  try {
-    await deleteCategoria(categoria.id);
-    await fetchAll();
-    await loadCantidadCategorias();
-
-    MySwal.fire({
-      icon: "success",
-      title: "Categoría eliminada",
-      text: `La categoría ${categoria.nombre} ha sido eliminada.`,
+  const handleDeleteCategoria = async (categoria: CategoriaDashboardDTO) => {
+    const result = await MySwal.fire({
+      title: "¿Estás seguro?",
+      text: `Esta acción eliminará la categoría ${categoria.nombre}.`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Sí, eliminar",
+      cancelButtonText: "Cancelar",
     });
 
-  } catch (error: unknown) {
-  const err = error as { response?: { data?: { message?: string } } };
+    if (!result.isConfirmed) return;
 
-  const backendMessage = err?.response?.data?.message || "";
-  
-  if (backendMessage.includes("productos asociados")) {
-    MySwal.fire({
-      icon: "info",
-      title: "No se puede eliminar",
-      html: `
+    try {
+      await deleteCategoria(categoria.id);
+      await fetchAll();
+      await loadCantidadCategorias();
+
+      MySwal.fire({
+        icon: "success",
+        title: "Categoría eliminada",
+        text: `La categoría ${categoria.nombre} ha sido eliminada.`,
+      });
+    } catch (error: unknown) {
+      const err = error as { response?: { data?: { message?: string } } };
+
+      const backendMessage = err?.response?.data?.message || "";
+
+      if (backendMessage.includes("productos asociados")) {
+        MySwal.fire({
+          icon: "info",
+          title: "No se puede eliminar",
+          html: `
         La categoría <b>${categoria.nombre}</b> no puede eliminarse
         porque tiene <b>productos asociados</b>.<br><br>
         <strong>Debes cambiar la línea de esos productos primero.</strong>
       `,
-    });
-    return;
-  }
+        });
+        return;
+      }
 
-  MySwal.fire({
-    icon: "error",
-    title: "Error",
-    text: "Error al eliminar la categoría.",
-  });
+      MySwal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Error al eliminar la categoría.",
+      });
 
-  console.error(error);
-}
-
-};
-
+      console.error(error);
+    }
+  };
 
   // Definición de columnas
   const columns: Column<CategoriaDashboardDTO>[] = [
@@ -354,6 +352,46 @@ const handleDeleteCategoria = async (categoria: CategoriaDashboardDTO) => {
     );
   }
 
+  const handleDownloadExcel = () => {
+    if (!categorias || categorias.content.length === 0) {
+      MySwal.fire({
+        icon: "warning",
+        title: "Sin datos",
+        text: "No hay líneas para descargar.",
+      });
+      return;
+    }
+
+    try {
+      // Formatear los datos para el Excel
+      const dataFormateada = categorias.content.map((categoria) => ({
+        Nombre: categoria.nombre,
+        Norma: categoria.norma,
+        Usos: categoria.usos,
+      }));
+
+      downloadExcel(
+        dataFormateada,
+        `lineas_${new Date().toISOString().split("T")[0]}`,
+        "Líneas"
+      );
+
+      MySwal.fire({
+        icon: "success",
+        title: "¡Descarga exitosa!",
+        text: "El archivo Excel se ha descargado correctamente.",
+        timer: 2000,
+      });
+    } catch (error: unknown) {
+      console.log("Error. ", error);
+      MySwal.fire({
+        icon: "error",
+        title: "Error",
+        text: "No se pudo descargar el archivo Excel.",
+      });
+    }
+  };
+
   return (
     <div>
       <div className={styles.dashboardHeader}>
@@ -368,6 +406,14 @@ const handleDeleteCategoria = async (categoria: CategoriaDashboardDTO) => {
         </div>
 
         <div className={styles.headerActions}>
+          <button
+            className={styles.addButton}
+            onClick={handleDownloadExcel}
+          >
+            <IconSVG name="download" size={20} />
+            Descargar xlsx
+          </button>
+
           <div className={styles.totalProducts}>
             <IconSVG
               name="categoria"

@@ -24,6 +24,7 @@ import MapCard from "../../../Components/dashboard/mapCard/MapCard";
 import { obtenerUsuario } from "../../../utils/auth";
 import { UserRoleConst } from "../../../models/Usuario/Usuario";
 import { Loader } from "../../../Components/loader/loader";
+import { downloadExcel } from "../../../utils/excel";
 
 function Cotizaciones() {
   const [cotizaciones, setCotizaciones] =
@@ -283,6 +284,52 @@ function Cotizaciones() {
     });
   }
 
+  const handleDownloadExcel = () => {
+    if (!cotizaciones || cotizaciones.content.length === 0) {
+      MySwal.fire({
+        icon: "warning",
+        title: "Sin datos",
+        text: "No hay cotizaciones para descargar.",
+      });
+      return;
+    }
+
+    try {
+      const dataFormateada = cotizaciones.content.map((cotizacion) => ({
+        Número: cotizacion.numeroCotizacion,
+        Cliente: cotizacion.clienteNombre,
+        Fecha: new Date(cotizacion.creacion).toLocaleDateString("es-PE", {
+          year: "numeric",
+          month: "2-digit",
+          day: "2-digit",
+        }),
+        Estado: cotizacion.estado,
+        Observaciones: cotizacion.observaciones || "Sin observaciones",
+      }));
+
+      // Ahora sí, descargar con los datos formateados
+      downloadExcel(
+        dataFormateada,
+        `cotizaciones_${new Date().toISOString().split("T")[0]}`,
+        "Cotizaciones"
+      );
+
+      MySwal.fire({
+        icon: "success",
+        title: "¡Descarga exitosa!",
+        text: "El archivo Excel se ha descargado correctamente.",
+        timer: 2000,
+      });
+    } catch (error: unknown) {
+      console.log("Error. ", error);
+      MySwal.fire({
+        icon: "error",
+        title: "Error",
+        text: "No se pudo descargar el archivo Excel.",
+      });
+    }
+  };
+
   return (
     <div>
       <div className={styles.dashboardHeader}>
@@ -297,10 +344,7 @@ function Cotizaciones() {
         </div>
 
         <div className={styles.headerActions}>
-          <button
-            className={styles.addButton}
-            onClick={() => setShowModal(true)}
-          >
+          <button className={styles.addButton} onClick={handleDownloadExcel}>
             <IconSVG
               name="download"
               size={24}

@@ -50,52 +50,60 @@
   margin: 0 40px 40px 40px;
 }
 .addButton {
-  flex: 1;
   height: 45px;
-  background-color: var(--primary-color);
+  background-color: white;
+  color: var(--primary-color);
   font-family: "Poppins", sans-serif;
-  color: #fff;
   font-weight: 600;
   border: 2px solid var(--primary-color);
   border-radius: 6px;
   padding: 8px 16px;
-  transition: background-color 0.2s ease;
   cursor: pointer;
+  transition: background-color 0.2s ease;
+
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  align-content: stretch;
+  gap: 8px;
 }
 
 .addButton:hover {
-  background: var(--white-color);
-  color: var(--primary-color);
+  background-color: var(--primary-color);
+  color: white;
 }
 
 .productIcon {
-  filter: brightness(0) saturate(100%) invert(18%) sepia(9%) saturate(1260%) hue-rotate(137deg) brightness(93%) contrast(89%);
+  filter: brightness(0) saturate(100%) invert(18%) sepia(9%) saturate(1260%)
+    hue-rotate(137deg) brightness(93%) contrast(89%);
 }
 /* ====== RESPONSIVE ====== */
 @media (max-width: 768px) {
-  .dashboardHeader{
-  flex-direction: column;
-  gap: 20px;
-}
+  .dashboardHeader {
+    flex-direction: column;
+    gap: 20px;
+  }
 }
 @media (max-width: 425px) {
-.dashboardHeader{
-  flex-direction: column;
-  gap: 20px;
-}
-.searchBarContainer{
-  order: 1;
-  width: 100%;
-}
-.tableContainer{
-  margin: 0;
-}
-.totalProducts{
-  padding: 8px;
-}
-.headerActions{
-  flex-direction: column;
-  width: 100%;
-  align-items: stretch;
-}
+  .dashboardHeader {
+    flex-direction: column;
+    gap: 20px;
+  }
+  .searchBarContainer {
+    order: 1;
+    width: 100%;
+  }
+  .tableContainer {
+    margin: 0;
+  }
+  .totalProducts {
+    padding: 8px;
+  }
+  .headerActions {
+    flex-direction: column;
+    width: 100%;
+    align-items: stretch;
+  }
 }

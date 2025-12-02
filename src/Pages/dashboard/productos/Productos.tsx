@@ -31,6 +31,7 @@ import { getAllCategories } from "../../../services/categoria.service";
 import { obtenerUsuario } from "../../../utils/auth";
 import { UserRoleConst } from "../../../models/Usuario/Usuario";
 import { Loader } from "../../../Components/loader/loader";
+import { downloadExcel } from "../../../utils/excel";
 
 export default function ProductosTable() {
   const [productos, setProductos] =
@@ -276,7 +277,6 @@ export default function ProductosTable() {
           text: "Error al eliminar el producto.",
         });
         console.log(error);
-        
       }
     }
   };
@@ -351,6 +351,46 @@ export default function ProductosTable() {
     );
   }
 
+  const handleDownloadExcel = () => {
+    if (!productos || productos.content.length === 0) {
+      MySwal.fire({
+        icon: "warning",
+        title: "Sin datos",
+        text: "No hay productos para descargar.",
+      });
+      return;
+    }
+
+    try {
+      // Formatear los datos para el Excel
+      const dataFormateada = productos.content.map((producto) => ({
+        Nombre: producto.nombre,
+        Línea: producto.categoriaNombre,
+        Descripción: producto.descripcion,
+      }));
+
+      downloadExcel(
+        dataFormateada,
+        `productos_${new Date().toISOString().split("T")[0]}`,
+        "Productos"
+      );
+
+      MySwal.fire({
+        icon: "success",
+        title: "¡Descarga exitosa!",
+        text: "El archivo Excel se ha descargado correctamente.",
+        timer: 2000,
+      });
+    } catch (error: unknown) {
+      console.log("Error. ", error);
+      MySwal.fire({
+        icon: "error",
+        title: "Error",
+        text: "No se pudo descargar el archivo Excel.",
+      });
+    }
+  };
+
   return (
     <div>
       <div className={styles.dashboardHeader}>
@@ -365,6 +405,14 @@ export default function ProductosTable() {
         </div>
 
         <div className={styles.headerActions}>
+          <button
+            className={styles.addButton}
+            onClick={handleDownloadExcel}
+          >
+            <IconSVG name="download" size={20} />
+            Descargar xlsx
+          </button>
+
           <div className={styles.totalProducts}>
             <IconSVG name="producto" size={20} className={styles.productIcon} />
             Total: {cantidad} Productos

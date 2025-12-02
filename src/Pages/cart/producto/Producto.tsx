@@ -154,16 +154,16 @@ const Producto = () => {
                 <p>{producto.categoriaUsos}</p>
               </div>
             </div>
+
+            <ProductosSugeridos
+              producto={producto?.id ?? 1}
+              categoria={producto?.categoriaId ?? 1}
+            />
           </div>
         ) : (
           <p>No se encontró el producto</p>
         )}
       </div>
-
-      <ProductosSugeridos
-        producto={producto?.id ?? 1}
-        categoria={producto?.categoriaId ?? 1}
-      />
     </>
   );
 };

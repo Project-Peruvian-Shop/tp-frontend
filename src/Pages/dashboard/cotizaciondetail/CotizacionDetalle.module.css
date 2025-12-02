@@ -148,6 +148,7 @@
   text-decoration: none;
   color: inherit;
   font-size: 14px;
+  font-family: "Poppins", sans-serif;
 }
 
 .pdfButton:hover {
@@ -349,19 +350,19 @@
   .actions {
     flex-direction: column;
   }
-  .left{
+  .left {
     width: 100%;
   }
-  .right{
+  .right {
     width: 100%;
   }
-  .card{
+  .card {
     height: auto;
   }
-  .addButton{
+  .addButton {
     height: auto;
   }
-  .content{
+  .content {
     flex-direction: column;
   }
 }

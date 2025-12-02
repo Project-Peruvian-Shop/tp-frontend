@@ -386,7 +386,7 @@ function CotizacionDetalle() {
                   rel="noopener noreferrer"
                   className={styles.pdfButton}
                 >
-                  Ver PDF
+                  Ver
                 </a>
                 <a
                   className={styles.pdfButton}
@@ -403,11 +403,11 @@ function CotizacionDetalle() {
                     window.URL.revokeObjectURL(url);
                   }}
                 >
-                  Descargar PDF
+                  Descargar
                 </a>
                 {/* Enviar por link de PDF por correo */}
                 <button onClick={handleSendEmail} className={styles.pdfButton}>
-                  Mandar PDF por correo
+                  Enviar por correo
                 </button>
                 {/* Enviar por link de PDF por whatsapp */}
                 <a
@@ -420,7 +420,7 @@ function CotizacionDetalle() {
                   rel="noopener noreferrer"
                   className={styles.pdfButton}
                 >
-                  Mandar PDF por WhatsApp
+                  Enviar por WhatsApp
                 </a>
               </div>
             ) : (

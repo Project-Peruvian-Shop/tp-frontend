@@ -58,11 +58,14 @@ import eyeShowPassword from "./Login/eye-password-show.svg";
 import eyeHidePassword from "./Login/eye-password-hide.svg.svg";
 import userInput from "./Login/user-input.svg";
 import phoneInput from "./Login/phone-input.svg";
+import download from "./download.svg";
+
 export const Icons = {
   "delete-primary": delete1,
   "view-secondary": view2,
   "edit-secondary": edit2,
   "delete-secondary": delete2,
+  download,
   categoria,
   cotizacion,
   dashboard,

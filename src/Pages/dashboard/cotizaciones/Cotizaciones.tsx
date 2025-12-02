@@ -297,6 +297,18 @@ function Cotizaciones() {
         </div>
 
         <div className={styles.headerActions}>
+          <button
+            className={styles.addButton}
+            onClick={() => setShowModal(true)}
+          >
+            <IconSVG
+              name="download"
+              size={24}
+              className={styles.cotizacionIcon}
+            />
+            Descargar xlsx
+          </button>
+
           <div className={styles.totalProducts}>
             <IconSVG
               name="cotizacion"

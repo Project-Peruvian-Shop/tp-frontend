@@ -23,6 +23,7 @@ import { useNavigate } from "react-router-dom";
 import { UserRoleConst } from "../../../models/Usuario/Usuario";
 import { obtenerUsuario } from "../../../utils/auth";
 import { Loader } from "../../../Components/loader/loader";
+import { downloadExcel } from "../../../utils/excel";
 function Mensajes() {
   const [mensajes, setMensajes] =
     useState<PaginatedResponse<MensajeDashboardDTO>>();
@@ -205,6 +206,54 @@ function Mensajes() {
     });
   }
 
+  const handleDownloadExcel = () => {
+    if (!mensajes || mensajes.content.length === 0) {
+      MySwal.fire({
+        icon: "warning",
+        title: "Sin datos",
+        text: "No hay mensajes para descargar.",
+      });
+      return;
+    }
+
+    try {
+      // Formatear los datos para el Excel
+      const dataFormateada = mensajes.content.map((mensaje) => ({
+        Tipo: mensaje.tipo,
+        Mensaje: mensaje.mensaje,
+        "Fecha de envío": new Date(mensaje.creacion).toLocaleDateString(
+          "es-PE",
+          {
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+          }
+        ),
+        Estado: mensaje.estado,
+      }));
+
+      downloadExcel(
+        dataFormateada,
+        `mensajes_${new Date().toISOString().split("T")[0]}`,
+        "Mensajes"
+      );
+
+      MySwal.fire({
+        icon: "success",
+        title: "¡Descarga exitosa!",
+        text: "El archivo Excel se ha descargado correctamente.",
+        timer: 2000,
+      });
+    } catch (error: unknown) {
+      console.log("Error. ", error);
+      MySwal.fire({
+        icon: "error",
+        title: "Error",
+        text: "No se pudo descargar el archivo Excel.",
+      });
+    }
+  };
+
   return (
     <div>
       <div className={styles.dashboardHeader}>
@@ -219,6 +268,15 @@ function Mensajes() {
         </div>
 
         <div className={styles.headerActions}>
+          <button className={styles.addButton} onClick={handleDownloadExcel}>
+            <IconSVG
+              name="download"
+              size={24}
+              className={styles.downloadIcon}
+            />
+            Descargar xlsx
+          </button>
+
           <div className={styles.totalCount}>
             Mensajes del mes: {cantidad?.mensaje_response_count_mes}
             <IconSVG
@@ -227,6 +285,7 @@ function Mensajes() {
               className={styles.mensajeSecondaryIcon}
             />
           </div>
+
           <div className={styles.totalSecondaryCount}>
             Mensajes por responder: {cantidad?.mensaje_pending_count_mes}
             <IconSVG

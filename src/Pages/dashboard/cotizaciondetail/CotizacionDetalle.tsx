@@ -157,7 +157,7 @@ function CotizacionDetalle() {
     observacion: string
   ) => {
     try {
-      await change_state(id, nuevoEstado, observacion);
+      await change_state(id, nuevoEstado, observacion, usuario?.id || 1);
       await fetchCotizacion(cotizacion?.id || id);
       setShowModal(false);
       await MySwal.fire({
@@ -207,7 +207,12 @@ function CotizacionDetalle() {
       const result = await uploadCotizacionPDF(cotizacion.id, selectedFile);
       setPdfPreview(result.archivo);
       await fetchCotizacion(cotizacion.id);
-      await change_state(cotizacion.id, "ENVIADA", "Se ha subido el PDF de la cotización.");
+      await change_state(
+        cotizacion.id,
+        "ENVIADA",
+        "Se ha subido el PDF de la cotización.",
+        usuario?.id || 1
+      );
       await fetchCotizacion(cotizacion.id);
       setSelectedFile(null);
 
@@ -227,36 +232,36 @@ function CotizacionDetalle() {
   };
   const handleSendEmail = async () => {
     if (!cotizacion) return;
-      const EMAILJS_SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID;
-      const EMAILJS_TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
-      const EMAILJS_PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+    const EMAILJS_SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+    const EMAILJS_TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+    const EMAILJS_PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
 
-  try {
-    await emailjs.send(
-      EMAILJS_SERVICE_ID,
-      EMAILJS_TEMPLATE_ID,
-      {
-        cliente_nombre: cotizacion.cliente,
-        to_email: cotizacion.email,
-        numero_cotizacion: cotizacion.numero,
-        enlace_pdf: cotizacion.cotizacionEnlace,
-      },
-      {  publicKey: EMAILJS_PUBLIC_KEY }
-    );
+    try {
+      await emailjs.send(
+        EMAILJS_SERVICE_ID,
+        EMAILJS_TEMPLATE_ID,
+        {
+          cliente_nombre: cotizacion.cliente,
+          to_email: cotizacion.email,
+          numero_cotizacion: cotizacion.numero,
+          enlace_pdf: cotizacion.cotizacionEnlace,
+        },
+        { publicKey: EMAILJS_PUBLIC_KEY }
+      );
 
-    Swal.fire({
-      icon: "success",
-      title: "Correo enviado",
-      text: "La cotización fue enviada correctamente al cliente.",
-    });
-  }catch (error) {
-    console.error(error);
-    Swal.fire({
-      icon: "error",
-      title: "Error",
-      text: "No se pudo enviar el correo.",
-    });
-  }
+      Swal.fire({
+        icon: "success",
+        title: "Correo enviado",
+        text: "La cotización fue enviada correctamente al cliente.",
+      });
+    } catch (error) {
+      console.error(error);
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "No se pudo enviar el correo.",
+      });
+    }
   };
 
   return (
@@ -401,10 +406,7 @@ function CotizacionDetalle() {
                   Descargar PDF
                 </a>
                 {/* Enviar por link de PDF por correo */}
-                <button
-                  onClick={handleSendEmail}
-                  className={styles.pdfButton}
-                >
+                <button onClick={handleSendEmail} className={styles.pdfButton}>
                   Mandar PDF por correo
                 </button>
                 {/* Enviar por link de PDF por whatsapp */}
@@ -458,7 +460,7 @@ function CotizacionDetalle() {
                             if (file && file.type === "application/pdf") {
                               setPdfPreview(URL.createObjectURL(file));
                             }
-                              setSelectedFile(file);
+                            setSelectedFile(file);
                           }}
                           onClick={() =>
                             document.getElementById("fileInput")?.click()

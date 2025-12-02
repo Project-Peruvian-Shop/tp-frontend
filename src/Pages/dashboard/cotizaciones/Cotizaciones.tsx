@@ -177,7 +177,7 @@ function Cotizaciones() {
     observacion: string
   ) => {
     try {
-      await change_state(id, nuevoEstado, observacion);
+      await change_state(id, nuevoEstado, observacion, usuario?.id || 1);
       await loadCotizaciones(page);
       setShowModal(false);
       await MySwal.fire({

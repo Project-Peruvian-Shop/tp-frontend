@@ -12,25 +12,24 @@
 }
 
 .productosGrid {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  align-content: stretch;
-  gap: 40px;
+  max-width: 1300px;
+  margin: 40px auto;
 
-  margin: 40px 0px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: flex-start;
+  gap: 40px;
 }
 
 @media (min-width: 320px) {
   .container {
     padding: 0;
   }
-  .subtitle{
+  .subtitle {
     text-align: center;
   }
   .productosGrid {
     gap: 0;
   }
-} 
+}

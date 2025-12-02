@@ -49,20 +49,18 @@ function ProductosSugeridos(props: ProductosSugeridosProps) {
     <>
       {!loading && productos?.length > 0 && (
         <div className={styles.container}>
-          <div className={styles.usosContainer}>
-            <div className={styles.subtitle}>Productos sugeridos</div>
-            <div className={styles.productosGrid}>
-              {productos.map((sugerido) => (
-                <ProductCard
-                  key={sugerido.id}
-                  link={`${routes.product}${sugerido.id}`}
-                  img={sugerido.imagenUrl}
-                  title={sugerido.nombre}
-                  alt={sugerido.imagenAlt}
-                  click={() => handleAddToCart(sugerido)}
-                />
-              ))}
-            </div>
+          <div className={styles.subtitle}>Productos sugeridos</div>
+          <div className={styles.productosGrid}>
+            {productos.map((sugerido) => (
+              <ProductCard
+                key={sugerido.id}
+                link={`${routes.product}${sugerido.id}`}
+                img={sugerido.imagenUrl}
+                title={sugerido.nombre}
+                alt={sugerido.imagenAlt}
+                click={() => handleAddToCart(sugerido)}
+              />
+            ))}
           </div>
         </div>
       )}
